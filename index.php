@@ -1,10 +1,11 @@
 <?php
-  $contacts = [
-    ["name" => "Pepe", "phone_number" => "212131"],
-    ["name" => "Antonio", "phone_number" => "212131"],
-    ["name" => "Nate", "phone_number" => "212131"],
-    ["name" => "Rodrigo", "phone_number" => "212131"]
-  ]
+
+  if (file_exists("contacts.json")){
+    $contacts = json_decode(file_get_contents("contacts.json"), true);
+  } else {
+    $contacts = [];
+  }
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -14,10 +15,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Bootstrap -->
     <link 
-        rel="stylesheet" 
-        href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/5.2.2/darkly/bootstrap.min.css" integrity="sha512-8RiGzgobZQmqqqJYja5KJzl9RHkThtwqP1wkqvcbbbHNeMXJjTaBOR+6OeuoxHhuDN5h/VlgVEjD7mJu6KNQXA==" 
-        crossorigin="anonymous" 
-        referrerpolicy="no-referrer" 
+      rel="stylesheet" 
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/5.2.2/darkly/bootstrap.min.css" integrity="sha512-8RiGzgobZQmqqqJYja5KJzl9RHkThtwqP1wkqvcbbbHNeMXJjTaBOR+6OeuoxHhuDN5h/VlgVEjD7mJu6KNQXA==" 
+      crossorigin="anonymous" 
+      referrerpolicy="no-referrer" 
     />
     <script
         defer 
@@ -50,10 +51,10 @@
           <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav">
               <li class="nav-item">
-                <a class="nav-link" href="#">Home</a>
+                <a class="nav-link" href="#">Inicio</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="./add.html">Add Contact</a>
+                <a class="nav-link" href="./add.php">Añadir contacto</a>
               </li>
             </ul>
           </div>
@@ -62,20 +63,26 @@
       <main>
         <div class="container pt-4 p-3">
             <div class="row">
-              
+              <?php if (count($contacts) == 0): ?>
+                <div class="col-md-4 mx-auto">
+                  <div class="card card-body text-center">
+                    <p>Aún no hay contactos</p>
+                    <a href="add.php" class="btn btn-primary">Añadir</a>
+                  </div>
+                </div>
+              <?php endif ?>
               <?php foreach ($contacts as $contact): ?>
                 <div class="col-md-4 mb-3">
-                    <div class="card text-center">
-                      <div class="card-body">
-                        <h3 class="card-title text-capitalize"><?= $contact["name"] ?></h3>
-                        <p class="m-2"><?= $contact["phone_number"] ?></p>
-                        <a href="#" class="btn btn-secondary mb-2">Edit Contact</a>
-                        <a href="#" class="btn btn-danger mb-2">Delete Contact</a>
-                      </div>
+                  <div class="card text-center">
+                    <div class="card-body">
+                      <h3 class="card-title text-capitalize"><?= $contact["name"] ?></h3>
+                      <p class="m-2"><?= $contact["phone_number"] ?></p>
+                      <a href="#" class="btn btn-secondary mb-2">Edit Contact</a>
+                      <a href="#" class="btn btn-danger mb-2">Delete Contact</a>
                     </div>
                   </div>
-              <?php endforeach ?>  
-            </div>
+                </div>
+              <?php endforeach ?>
         </div>
       </main>
 </body>
